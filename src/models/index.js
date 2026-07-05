@@ -6,6 +6,7 @@ import { Product } from "./product.js";
 import { cartItem } from "./cartitem.js";
 import { orderProduct } from "./orderproduct.js";
 import { Order } from "./order.js";
+import { OTP } from "./otp.js";
 
 User.hasOne(Cart, {
   foreignKey: 'userID',
@@ -67,7 +68,16 @@ orderProduct.belongsTo(Product, {
 foreignKey: 'orderID',
 as: 'userProduct'
 })
-
+User.hasOne(OTP,
+  {
+    foreignKey: 'email',
+    as:'usersOTP'
+  }
+)
+OTP.belongsTo(User, {
+ foreignKey: 'email',
+    as:'owner'
+})
 
 
 

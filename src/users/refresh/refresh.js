@@ -8,11 +8,11 @@ export const refresh = async (req, res) => {
     try {
         const {token} = req.body
 
-        if(!token) return res.status(404).json({error: `Pls token is required `})
+        if(!token) return res.status(400).json({error: `Pls token is required `})
 
         jwt.verify(token, config.refresh, async(error, decode) => {
            
-        if(error) return res.status(404).json({error: `Token is expired already`})
+        if(error) return res.status(400).json({error: `Token is expired already`})
        
             console.log(decode);
         let id = decode.id
@@ -33,6 +33,6 @@ export const refresh = async (req, res) => {
         
          console.error( `Error creating refresh tokens User`,error);
     
-    return res.status(404).json({error:`Internal Server Error`})
+    return res.status(500).json({error:`Internal Server Error`})
     }
 }

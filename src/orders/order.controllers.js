@@ -11,16 +11,17 @@ try {
     
       const loggedIn= req.user
         
-        if(!loggedIn) return res.status(404).json({message: `Pls kindly re-login`})
-    const allOrders = Order.findAll({Order})
+        if(!loggedIn) return res.status(400).json({message: `Pls kindly re-login`})
 
-return res.status(201).json({message: `Orders`, allOrders})
+    const allOrders = await Order.findAll({Order})
+
+return res.status(200).json({message: `Orders`, allOrders})
 
 } catch (error) {
 
       console.error( `Error geting all orders `,error);
     
-    return res.status(404).json({error:`Internal Server Error`})
+    return res.status(500).json({error:`Internal Server Error`})
 }
 
 
@@ -31,17 +32,17 @@ try {
     
       const loggedIn= req.user
         
-        if(!loggedIn) return res.status(404).json({message: `Pls kindly re-login`})
+        if(!loggedIn) return res.status(400).json({message: `Pls kindly re-login`})
 
     const allOrders = await findItem({userID: loggedIn.id})
 
-return res.status(201).json({message: `Orders`, allOrders})
+return res.status(200).json({message: `Orders`, allOrders})
 
 } catch (error) {
 
       console.error( `Error geting all orders `,error);
     
-    return res.status(404).json({error:`Internal Server Error`})
+    return res.status(500).json({error:`Internal Server Error`})
 }
 
 
@@ -52,11 +53,11 @@ export const OrderProductsController  =  async (req, res) => {
     try {
         const loggedIn= req.user
         
-        if(!loggedIn) return res.status(404).json({message: `Pls kindly re-login`})
+        if(!loggedIn) return res.status(400).json({message: `Pls kindly re-login`})
 
          const {error, value } = orderSchema.validate(req.body)
 
-        if (error) return res.status(404).json(error.message)
+        if (error) return res.status(400).json(error.message)
 
         let {description , quantity, address,  productID, orderID, unitPrice, userID, totalAmount} = value
      
@@ -64,7 +65,7 @@ export const OrderProductsController  =  async (req, res) => {
     
     const product = await findProduct({description: value.description})
 
-    if(!product) return res.status(404).json({error: `Pls product is not found`})
+    if(!product) return res.status(400).json({error: `Pls product is not found`})
 
 // find cart with user  .NOT NECESSARY!!!
 
@@ -72,23 +73,23 @@ export const OrderProductsController  =  async (req, res) => {
     console.log(findCart);
     console.log(loggedIn.id);
     
-    if(!findCart) return res.status(404).json({error: `You cannot place an order unless you have signed up `})
+    if(!findCart) return res.status(400).json({error: `You cannot place an order unless you have signed up `})
 
 // check if user has added any product before. NOT NECESSARY
 
     const user = await findProductCart({cartID: findCart.id}, {productID: product.id})
 
-    if(!user) return res.status(404).json({error: `You have not added any product to your Cart`})
+    if(!user) return res.status(400).json({error: `You have not added any product to your Cart`})
 
 // check if user has added that product to cart
 
     const cart = await findProductCart({productID: product.id})
 
-    if(!cart) return res.status(404).json({error: `Pls you have not added this product your cart`})
+    if(!cart) return res.status(400).json({error: `Pls you have not added this product your cart`})
 
 // take away the number of units of products
 
-    if(quantity > cart.quantity) return res.status(404).json({error: `Not enough products in your cart, you have ${cart.quantity} left, pls add more products to your cart `})
+    if(quantity > cart.quantity) return res.status(400).json({error: `Not enough products in your cart, you have ${cart.quantity} left, pls add more products to your cart `})
 
 // sort Out the price
 
@@ -121,7 +122,7 @@ export const OrderProductsController  =  async (req, res) => {
     
     value.orderID  = newOrder.id
 
-// if(cart.quantity == 0) return res.status(404).json({error: ``})
+// if(cart.quantity == 0) return res.status(400).json({error: ``})
 
   const orderItem =   await createOrderItem(value)
 
@@ -133,12 +134,12 @@ export const OrderProductsController  =  async (req, res) => {
 
   await updateCartProduct  ({quantity: cartProductLeft},{productID: cart.productID})
 
-    return res.status(404).json({message: ` Pls proceed for payment`,  newOrder ,orderItem})
+    return res.status(202).json({message: ` Pls proceed for payment`,  newOrder ,orderItem})
 
     } catch (error) {
         console.error( `Error ordering  products`,error);
     
-        return res.status(404).json({error:`Internal Server Error`}) 
+        return res.status(500).json({error:`Internal Server Error`}) 
     }
 
 }
@@ -158,9 +159,9 @@ console.log({newPrice: newPrice});
 
     amount = parseFloat(value.amount)
 
-    if (amount < newPrice) return res.status(404).json({error: `Insuffient balance, Balance is `})
+    if (amount < newPrice) return res.status(400).json({error: `Insuffient balance, Balance is `})
 
-    if (amount > newPrice) return res.status(404).json({error: ` The price of the product is ${newPrice} `})
+    if (amount > newPrice) return res.status(400).json({error: ` The price of the product is ${newPrice} `})
 
 
 
@@ -169,7 +170,7 @@ console.log({newPrice: newPrice});
 
 console.log({pod:productLeft});
 
-if(findName.unit === 0 ) return res.status(404).json({error: `We are out of products`})
+if(findName.unit === 0 ) return res.status(400).json({error: `We are out of products`})
 
     value.status = "delivering"
 
@@ -184,12 +185,12 @@ if(findName.unit === 0 ) return res.status(404).json({error: `We are out of prod
 console.log(order);
 
 
-    return res.status(404).json({message: `You have succefully orderd this product, ` , order})
+    return res.status(200).json({message: `You have succefully orderd this product, ` , order})
 } catch (error) {
     
     console.error( `Error paying for products`,error);
     
-        return res.status(404).json({error:`Internal Server Error`}) 
+        return res.status(500).json({error:`Internal Server Error`}) 
 
 }
 

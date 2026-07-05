@@ -18,11 +18,11 @@ Product.init(
       onDelete:'CASCADE',
       onUpdate:'CASCADE'
       },
-      description: {
+      name: {
         type: DataTypes.STRING,
         allowNull:false
       },
-      unit: {
+      quantity: {
         type: DataTypes.INTEGER,
         allowNull:false
       },
@@ -34,6 +34,15 @@ Product.init(
         type: DataTypes.ENUM('available', 'sold out'),
         defaultValue: 'available' ,
         allowNull: false
+      },
+      description:{
+          type: DataTypes.STRING,
+         allowNull: false,
+         defaultValue: 'null'
+      },
+      images:{
+          type: DataTypes.STRING,
+          defaultValue: 'null'
       }
     },
   {

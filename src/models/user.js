@@ -36,6 +36,16 @@ User.init(
         allowNull: false,
         defaultValue:"Customer"
       },
+      verify:{
+          type: DataTypes.ENUM('false', 'true'),
+          defaultValue: 'false',
+          allowNull: false,
+      },
+       expiresAt:{
+type: DataTypes.DATE,
+  allowNull: false,
+
+       } 
 
   },
   {

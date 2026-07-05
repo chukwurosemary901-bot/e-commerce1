@@ -47,6 +47,10 @@ export const deleteProduct = async (value) => {
     return await Product.destroy({where:value})
 
 }
+export const productImages = async (value) => {
+    return await Product.create(value)
+
+}
 
 
 

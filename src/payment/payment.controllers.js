@@ -6,7 +6,10 @@ import { User } from "../models/user.js"
 export const initializePayment = async (req, res) => {
    
     try {
-        
+        const loggedIn = req.user
+
+    if (!loggedIn) return res.status(401).json({error: `Kindly re-login`})
+
 const {  orderID} = req.body
 if( !orderID)
     return res.status(400).json({message: ` orderID is required`})

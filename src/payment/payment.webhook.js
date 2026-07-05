@@ -1,10 +1,16 @@
 import crypto from 'crypto'
-// import Order from '../order.js'
+
 import { config } from '../config/env.js'
 import { Order } from '../models/order.js';
+import {Product} from '../models/product.js'
+import { findProduct } from '../products/products.services.js';
+// import { log } from 'console';
 
 export const paystackWebhook = async (req, res) => {
-    console.log("Webhook received:", req.body);
+   
+
+try {
+  console.log("Webhook received:", req.body);
   console.log("Metadata orderId:", req.body.data.metadata.orderId);
     const signature = req.headers["x-paystack-signature"]
 
@@ -16,7 +22,7 @@ export const paystackWebhook = async (req, res) => {
     // if(hash !== signature){
     //     return res.status(401)
     // }
-
+// const quantity = await findProduct({})
     const event = req.body
     
     
@@ -32,7 +38,16 @@ console.log(event);
     where: {id: metadata.orderID}
 }
 );
+
+// await Product.update({
+
+// })
     }
 
-    return res.status(200)
+    return res.status(200)   
+} catch (error) {
+    console.log(`Error updating order payment`);
+    
+}
+
 }

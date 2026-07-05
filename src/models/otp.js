@@ -1,44 +1,35 @@
-
-
-
-
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/sequelize.js";
-export class Category extends Model {}
-Category.init(
+export class OTP extends Model{}
+
+OTP.init(
   {
-  id: {
+ id: {
         primaryKey: true,
         type: DataTypes.STRING,
         defaultValue: DataTypes.UUIDV4
       },
-  name: {
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+     
+      },
+      otp:{
         type: DataTypes.STRING,
         allowNull: false
       },
-  description: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'null'
+      expiresAt:{
+      allowNull: false,
+        type: DataTypes.DATE
       },
-
   },
   {
     sequelize,
-    modelName: "Category",
-    tableName: "Categories",
+    modelName: "OTP",
+    tableName: "OTPs"
+
   }
-);
-
-
-
-
-
-
-
-
-
-
+)
 
 
 
@@ -57,7 +48,7 @@ Category.init(
 //   Model
 // } = require('sequelize');
 // module.exports = (sequelize, DataTypes) => {
-//   class Category extends Model {
+//   class OTP extends Model {
 //     /**
 //      * Helper method for defining associations.
 //      * This method is not a part of Sequelize lifecycle.
@@ -67,11 +58,11 @@ Category.init(
 //       // define association here
 //     }
 //   }
-//   Category.init({
-//     description: DataTypes.STRING
+//   OTP.init({
+//     email: DataTypes.STRING
 //   }, {
 //     sequelize,
-//     modelName: 'Category',
+//     modelName: 'OTP',
 //   });
-//   return Category;
+//   return OTP;
 // };

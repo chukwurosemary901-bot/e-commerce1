@@ -6,16 +6,17 @@ import  {config}  from './config/env.js'
 import { routes } from './utils/routes.js'
 import { sequelize } from './config/sequelize.js'
 import { initDB } from './models/index.js'
-
+import cors from 'cors'
+import { corsOptions } from './cors/cors.js'
 const app  = express()
 
 app.use(express.json())
 
+app.use(cors(corsOptions))
 export const router = Router()
 
 app.use(router)
 app.use(routes)
-
 // app.use(express.static('src'))
 
 // app.get('/ded', (req, res) => {

@@ -20,6 +20,9 @@ export const userCart = async (value) => {
 export const updateRole = async (attribute , value) => {
    return await User.update(attribute, {where: value})
 }
+export const findVerify = async ( value) => {
+   return await User.findOne( {where: value})
+}
 
 
 
