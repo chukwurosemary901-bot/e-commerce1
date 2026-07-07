@@ -5,7 +5,7 @@ import { findUserbyEmail, findVerify, getUsers, signUpUser, signUpUserCart, upda
 import { comparePassword, hashPassword } from '../utils/bcrypt.js'
 import { User } from "../models/user.js";
 import { Cart } from "../models/cart.js";
-
+// import { createdOTP } from "../OTP/otp.controllers.js";
 
 // import bcrypt 
 
@@ -38,12 +38,12 @@ export const userSignUpController  =  async (req, res) => {
 try {
 
     
-
+console.log("Request body:", req.body);
     const {error, value} = userSchema.validate(req.body)
-   
+   console.log("Validation result:", { error, value });
     if (error)return res.status(400).json({error:error.message})
 
-    const {firstName, lastName, email, phoneNumber, password, role, expiresAt} = value
+    const {firstName, lastName, email, phoneNumber, password, role, expiresAt, duration = 1} = value
 
     // check if email exists
     // const findEmail = users.find((user) => user.email == email)
@@ -62,7 +62,7 @@ try {
     // value.role = "customer"
     // store the new user
 
-    // value.expiresAt = Date.now * 10000 
+    value.expiresAt =Date.now() + 3600000 * +duration 
 
     const newUser =  await signUpUser(value)
 // const find = users.findLast((f) => f.email == value.email )
@@ -86,13 +86,15 @@ try {
 export const usersLoginController  =  async (req, res) => {
     
 try {
+console.log("Request body:", req.body);
     
     const {error, value} = loginSchema.validate(req.body)
+   console.log("Validation result:", { error, value });
 
 // console.log( req.headers.authorization.split(' ')[1]);
 // console.log(`Happy`);
 
-    if (error) return res.status(400).json(error.message)
+    if (error) return res.status(400).json({error:error.message})
 
     let {email, password, role, verify} = value
 
@@ -115,18 +117,18 @@ try {
 
     if (!checkPass) return res.status(400).json({error: `Incorrect password`})
 
-    const Verify = await findVerify({email: value.email})
+    // const Verify = await findVerify({email: value.email})
 
-    if(Verify.verify === 'false') return res.status(401).json({message: `Pls verify your email with the OTP that has been sent`}) 
+    // if(Verify.verify === 'false') return res.status(401).json({error: `Pls verify your email with the OTP that has been sent`}) 
 
-    if(Verify.expiresAt < Date.now()){
-        value.verify = 'false'
+//     if(Verify.expiresAt < Date.now()){
+//         value.verify = 'false'
 
-await updateRole({verify:value.verify}, { email: value.email} )
+// await updateRole({verify:value.verify}, { email: value.email} )
 
-        return res.status(401).json({message: `Pls verify the otp sent to your email `})
+//         return res.status(401).json({message: `Pls verify the otp sent to your email `})
 
-    } 
+//     } 
     
         
 

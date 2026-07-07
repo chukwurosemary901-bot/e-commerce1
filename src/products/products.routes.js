@@ -11,4 +11,4 @@ productRouter.post('/addProduct' ,auth, AdminAuth, productControllers.addProduct
 productRouter.get('/' , productControllers.allProductsController)
 productRouter.post('/addToCart' ,auth, productControllers.addToCartController)
 productRouter.delete('/deleteProduct' ,auth, AdminAuth,  productControllers.deleteProductController)
-productRouter.post('/single' , productControllers.upload.single('image'),  productControllers.productImageController)
+// productRouter.post('/single' , productControllers.upload.single('image'),  productControllers.productImageController)

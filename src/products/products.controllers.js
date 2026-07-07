@@ -5,6 +5,7 @@ import { Product } from "../models/product.js";
 import { sanitize } from "../utils/sanitize.js";
 // import wuw from 'mu'
 import multer from 'multer';
+import { router } from "../server.js";
 
 
 
@@ -260,28 +261,47 @@ let newItem = parseFloat(findCartID.quantity) + parseFloat(value.quantity)
 
 }
 
-const fileStorageEngine = multer.diskStorage({
-    destination: async(req, file, cb) => {
-        cd(null, await Product.create(images) )
-    }, 
-    filename: (req, file, cb)=>{
-cb(null, Date.now() + '...' + file.originalname)
-    }
-})
+// const fileStorageEngine = multer.diskStorage({
+//     destination: async(req, file, cb) => {
+//         cb(null, await Product.create(images) )
+//     }, 
+//     filename: (req, file, cb)=>{
+// cb(null, Date.now() + '...' + file.originalname)
+//     }
+// })
 
- export const upload = multer({storage: fileStorageEngine})
+//  export const upload = multer({storage: fileStorageEngine})
 
- export const productImageController = async (req, res) => {
+//  export const productImageController = async (req, res) => {
     
-try {
-    console.log(req.file);
+// try {
+//     console.log(req.file);
     
-res.status(201).json({message: `Successfully added a new image for product`})
+// res.status(201).json({message: `Successfully added a new image for product`})
 
-} catch (error) {
-    console.log(`Error adding products images`, error);
+// } catch (error) {
+//     console.log(`Error adding products images`, error);
     
-    return res.status(500).json({error: `Internal Server Error`})
-}
+//     return res.status(500).json({error: `Internal Server Error`})
+// }
 
- } 
+//  } 
+// const storage = multer.memoryStorage()
+// const upload = multer({storage})
+
+// export const uploadImageController  = async (req, res) => {
+    
+// try {
+//     const {productID} = req.body
+
+//     const file = req.file
+
+//     if(!file) return res.status(400).json({error: `No file uploaded`})
+
+//       const baseImage = file.buffer.toString()  
+// } catch (error) {
+//     console.log(`error uploading image`, error);
+//     return(`Internal Server Error`)
+// }
+
+// }

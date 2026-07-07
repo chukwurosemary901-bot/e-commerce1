@@ -12,7 +12,7 @@ const app  = express()
 
 app.use(express.json())
 
-app.use(cors(corsOptions))
+app.use(cors())
 export const router = Router()
 
 app.use(router)
